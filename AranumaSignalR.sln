@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AranumaSignalRWinform.Client", "AranumaSignalRWinform.Client\AranumaSignalRWinform.Client.csproj", "{BCED826D-80F8-4745-93CB-19FAC611CE8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AranumaSignalRWinform.Client", "AranumaSignalRWinform.Client\AranumaSignalRWinform.Client.csproj", "{BCED826D-80F8-4745-93CB-19FAC611CE8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AranumaSignalR.WebApi.Server", "AranumaSignalR.WebApi.Server\AranumaSignalR.WebApi.Server.csproj", "{AFB78959-5F4A-455C-A456-EB5D9691C0D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AranumaSignalR.WebApi.Server", "AranumaSignalR.WebApi.Server\AranumaSignalR.WebApi.Server.csproj", "{AFB78959-5F4A-455C-A456-EB5D9691C0D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

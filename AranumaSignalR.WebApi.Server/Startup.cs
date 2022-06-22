@@ -27,7 +27,12 @@ namespace AranumaSignalR.WebApi.Server
         {
 
             services.AddControllers();
-            services.AddSignalR();
+            services.AddSignalR(options =>
+            {
+                // Faster pings for testing
+                options.KeepAliveInterval = TimeSpan.FromSeconds(5);
+            });
+            //.AddMessagePackProtocol(); ;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
