@@ -47,6 +47,8 @@ namespace Microsoft.AspNetCore.SignalR.Client
             public TcpConnectionFactory(EndPoint endPoint)
             {
                 _endPoint = endPoint;
+
+                //var tts=new TcpConnection(_endPoint).StartAsync();
             }
 
 
