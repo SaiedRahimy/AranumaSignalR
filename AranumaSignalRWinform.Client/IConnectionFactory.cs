@@ -7,7 +7,7 @@ namespace Microsoft.AspNetCore.Connections
     //
     // Summary:
     //     A factory abstraction for creating connections to an endpoint.
-    public interface IConnectionFactory
+    public interface IConnectionFactory12
     {
         //
         // Summary:

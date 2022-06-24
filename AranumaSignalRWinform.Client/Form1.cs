@@ -86,12 +86,13 @@ namespace AranumaSignalRWinform.Client
                     
                     if (uri.Scheme == "net.tcp")
                     {
-                        connectionBuilder.WithEndPoint(uri);
+                        connectionBuilder.WithEndPoint(uri);                        
                     }
                     else
                     {
                         connectionBuilder.WithUrl(uri);
                     }
+
 
                     _connection = connectionBuilder.Build();
                     

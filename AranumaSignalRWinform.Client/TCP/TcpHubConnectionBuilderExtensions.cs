@@ -49,18 +49,18 @@ namespace Microsoft.AspNetCore.SignalR.Client
                 _endPoint = endPoint;
             }
 
-           
 
-           
-            //public ValueTask<ConnectionContext> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default)
-            //{
-            //    return new TcpConnection(_endPoint).StartAsync();//.AsTask();
-            //}
 
-            public Task<ConnectionContext> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default)
+
+            public ValueTask<ConnectionContext> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default)
             {
-                return new TcpConnection(_endPoint).StartAsync().AsTask();
+                return new TcpConnection(_endPoint).StartAsync();//.AsTask();
             }
+
+            //public Task<ConnectionContext> ConnectAsync(EndPoint endpoint, CancellationToken cancellationToken = default)
+            //{
+            //    return new TcpConnection(_endPoint).StartAsync().AsTask();
+            //}
 
             public Task DisposeAsync(ConnectionContext connection)
             {
