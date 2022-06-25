@@ -20,33 +20,33 @@ namespace AranumaSignalRWinform.Client
             Application.SetCompatibleTextRenderingDefault(false);
 
 
-            var app = new CommandLineApplication();
-            app.FullName = "SignalR Client Samples";
-            app.Description = "Client Samples for SignalR";
+            //var app = new CommandLineApplication();
+            //app.FullName = "SignalR Client Samples";
+            //app.Description = "Client Samples for SignalR";
 
-            RawSample.Register(app);
-            HubSample.Register(app);
+            //RawSample.Register(app);
+            //HubSample.Register(app);
 
-            app.Command("help", cmd =>
-            {
-                cmd.Description = "Get help for the application, or a specific command";
+            //app.Command("help", cmd =>
+            //{
+            //    cmd.Description = "Get help for the application, or a specific command";
 
-                var commandArgument = cmd.Argument("<COMMAND>", "The command to get help for");
-                cmd.OnExecute(() =>
-                {
-                    app.ShowHelp(commandArgument.Value);
-                    return 0;
-                });
-            });
+            //    var commandArgument = cmd.Argument("<COMMAND>", "The command to get help for");
+            //    cmd.OnExecute(() =>
+            //    {
+            //        app.ShowHelp(commandArgument.Value);
+            //        return 0;
+            //    });
+            //});
 
-            app.OnExecute(() =>
-            {
-                app.ShowHelp();
-                return 0;
-            });
+            //app.OnExecute(() =>
+            //{
+            //    app.ShowHelp();
+            //    return 0;
+            //});
 
-            app.Execute(new string[] { "hub" });
-            //app.Execute(args);
+            //app.Execute(new string[] { });// "hub" });
+            ////app.Execute(args);
 
 
             Application.Run(new Form1());

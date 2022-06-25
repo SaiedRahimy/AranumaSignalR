@@ -27,6 +27,15 @@ namespace AranumaSignalR.WebApi.Server
         {
 
             services.AddControllers();
+
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder => {
+                builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .WithOrigins("http://localhost:5002");
+            }));
+
             services.AddSignalR(options =>
             {
                 // Faster pings for testing
@@ -44,8 +53,11 @@ namespace AranumaSignalR.WebApi.Server
             }
 
             app.UseRouting();
+            
 
             app.UseAuthorization();
+
+            app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
             {

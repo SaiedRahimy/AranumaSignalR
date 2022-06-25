@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Net;
 using System.Threading;
@@ -19,9 +20,10 @@ namespace AranumaSignalRWinform.Client
         private void Form1_Load(object sender, EventArgs e)
         {
             //txtUrl.Text = "http://localhost:5000/chat/";
+            txtClientName.Text = Environment.MachineName.ToString() + Process.GetCurrentProcess().Id + "Sensor";
         }
 
-        public  IPEndPoint CreateIPEndPoint(string endPoint)
+        public IPEndPoint CreateIPEndPoint(string endPoint)
         {
             string[] ep = endPoint.Split(':');
             if (ep.Length != 2) throw new FormatException("Invalid endpoint format");
@@ -39,139 +41,89 @@ namespace AranumaSignalRWinform.Client
         }
         private async void btnConnect_Click(object sender, EventArgs e)
         {
-            if (false)
+
+            try
             {
-                try
+
+                string baseUrl = txtUrl.Text;
+                var uri = baseUrl == null ? new Uri("net.tcp://94.182.180.208:1234") : new Uri(baseUrl);
+
+                var connectionBuilder = new HubConnectionBuilder();
+
+                //if (uri.Scheme.Contains("net.tcp"))
+                //{
+                //    connectionBuilder.WithEndPoint(uri);
+                //}
+                //else
                 {
-                    _connection = new HubConnectionBuilder()
-                   .WithUrl(txtUrl.Text)
-                   .Build();
-
-                _connection.On<string, string>("alert", (s1, s2) => OnSend(s1, s2));
-
-               
-                    await _connection.StartAsync();
-
-                    _connection.Closed += async (error) =>
-                    {
-                        await Task.Delay(new Random().Next(0, 5) * 1000);
-                        await _connection.StartAsync();
-                    };
+                    connectionBuilder.WithUrl(uri);
                 }
-                catch (Exception ex)
+
+
+                _connection = connectionBuilder.Build();
+
+
+                _connection.On<string, string>("recive", (s1, s2) => OnRecive(s1, s2));
+                _connection.On<string>("identificationResponse", (message) => IdentificationResponse(message));
+
+
+
+                CancellationTokenSource closedTokenSource = null;
+
+                _connection.Closed += e =>
                 {
-                    Log(ex.Message);
-                    return;
-                }
+                    // This should never be null by the time this fires
+                    closedTokenSource.Cancel();
+
+                    Log("Connection closed...");
+                    return Task.CompletedTask;
+
+                    //await Task.Delay(new Random().Next(0, 5) * 1000);
+                    //await _connection.StartAsync();
+                };
+
+                closedTokenSource?.Dispose();
+
+                // Create a new token for this run
+                closedTokenSource = new CancellationTokenSource();
+
+
+                await _connection.StartAsync();
+
+
+                await _connection.InvokeAsync("Identification", txtClientName.Text);
+
+
+                btnConnect.Enabled = false;
+                btnDisconnect.Enabled = true;
+                btnSend.Enabled = true;
+                btnLogout.Enabled = true;
+                txtMessage.Focus();
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    //var endpoint = new IPEndPoint(IPAddress.Loopback, 5060);
-                    
-
-                    string baseUrl = txtUrl.Text;
-                    var uri = baseUrl == null ? new Uri("tcp://94.182.180.208:1234") : new Uri(baseUrl);
-
-
-
-
-
-
-                    var connectionBuilder = new HubConnectionBuilder();
-                
-
-
-                    
-                    if (uri.Scheme == "net.tcp")
-                    {
-                        connectionBuilder.WithEndPoint(uri);                        
-                    }
-                    else
-                    {
-                        connectionBuilder.WithUrl(uri);
-                    }
-
-
-                    _connection = connectionBuilder.Build();
-                    
-
-
-                    _connection.On<string, string>("alert", (s1, s2) => OnSend(s1, s2));
-
-                    CancellationTokenSource closedTokenSource = null;
-
-                    _connection.Closed += e =>
-                    {
-                        // This should never be null by the time this fires
-                        closedTokenSource.Cancel();
-
-                        Log("Connection closed...");
-                        return Task.CompletedTask;
-                    };
-
-                    closedTokenSource?.Dispose();
-
-                    // Create a new token for this run
-                    closedTokenSource = new CancellationTokenSource();
-
-
-                    if (!await ConnectAsync(_connection))
-                    {
-                        return;
-                    }
-
-
-                    
-                }
-                catch (Exception ex)
-                {
-                    Log(ex.Message);
-                    return;
-                }
-               
-
+                Log(ex.Message);
+                Redesign();
+                return;
             }
-
-            btnConnect.Enabled = false;
-            btnDisconnect.Enabled = true;
-            btnSend.Enabled = true;
-            txtMessage.Focus();
         }
 
-        private  async Task<bool> ConnectAsync(HubConnection connection)
+
+        private void Redesign()
         {
-            // Keep trying to until we can start
-            while (true)
-            {
-                try
-                {
-                    await connection.StartAsync();
-                    return true;
-                }
-                catch (ObjectDisposedException)
-                {
-                    // Client side killed the connection
-                    return false;
-                }
-                catch (Exception)
-                {
-                    Log("Failed to connect, trying again in 5000(ms)");
-
-                    await Task.Delay(5000);
-                }
-            }
+            btnConnect.Enabled = true;
+            btnDisconnect.Enabled = false;
+            btnSend.Enabled = false;
+            btnLogout.Enabled = false;
         }
-
         private async void btnDisconnect_Click(object sender, EventArgs e)
         {
             try
             {
+                Redesign();
                 await _connection.StopAsync();
-                btnConnect.Enabled = true;
-                btnDisconnect.Enabled = false;
-                btnSend.Enabled = false;
+
+
             }
             catch (Exception ex)
             {
@@ -184,7 +136,7 @@ namespace AranumaSignalRWinform.Client
         {
             try
             {
-                await _connection.InvokeAsync("Send", "Fire Sensor", txtMessage.Text);
+                await _connection.InvokeAsync("Send", txtClientName.Text, txtMessage.Text);
             }
             catch (Exception ex)
             {
@@ -193,13 +145,39 @@ namespace AranumaSignalRWinform.Client
         }
         private void Log(string message)
         {
-            txtResult.Text += "\r\n" + message;
+            if (!txtResult.InvokeRequired)
+            {
+                txtResult.Text += "\r\n" + message;
+            }
+            else
+            {
+                txtResult.Invoke(new MethodInvoker(delegate
+                {
+
+                    txtResult.Text += "\r\n" + message;
+
+                }));
+            }
         }
-        private void OnSend(string name, string message)
+        private void OnRecive(string name, string message)
         {
             txtResult.Text += "\r\n" + name + ": " + message;
         }
+        private void IdentificationResponse(string message)
+        {
+            txtResult.Text += "\r\n" + "Server: " + message;
+        }
 
+        private async void btnLogout_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                await _connection.InvokeAsync("Logout");
+            }
+            catch
+            {
 
+            }
+        }
     }
 }

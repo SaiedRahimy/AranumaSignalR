@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnLogout = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtClientName = new System.Windows.Forms.TextBox();
             this.txtUrl = new System.Windows.Forms.TextBox();
             this.btnDisconnect = new System.Windows.Forms.Button();
             this.btnConnect = new System.Windows.Forms.Button();
@@ -44,15 +47,44 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.btnLogout);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.txtClientName);
             this.groupBox1.Controls.Add(this.txtUrl);
             this.groupBox1.Controls.Add(this.btnDisconnect);
             this.groupBox1.Controls.Add(this.btnConnect);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(7, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(639, 67);
+            this.groupBox1.Size = new System.Drawing.Size(639, 142);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server";
+            // 
+            // btnLogout
+            // 
+            this.btnLogout.Location = new System.Drawing.Point(11, 113);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(75, 23);
+            this.btnLogout.TabIndex = 5;
+            this.btnLogout.Text = "Logout";
+            this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 72);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(76, 15);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Client Name:";
+            // 
+            // txtClientName
+            // 
+            this.txtClientName.Location = new System.Drawing.Point(93, 69);
+            this.txtClientName.Name = "txtClientName";
+            this.txtClientName.Size = new System.Drawing.Size(454, 23);
+            this.txtClientName.TabIndex = 3;
             // 
             // txtUrl
             // 
@@ -90,9 +122,9 @@
             this.Message.Controls.Add(this.txtResult);
             this.Message.Controls.Add(this.txtMessage);
             this.Message.Controls.Add(this.btnSend);
-            this.Message.Location = new System.Drawing.Point(1, 95);
+            this.Message.Location = new System.Drawing.Point(1, 160);
             this.Message.Name = "Message";
-            this.Message.Size = new System.Drawing.Size(639, 429);
+            this.Message.Size = new System.Drawing.Size(639, 420);
             this.Message.TabIndex = 1;
             this.Message.TabStop = false;
             this.Message.Text = "Message";
@@ -101,7 +133,7 @@
             // 
             this.txtResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtResult.Location = new System.Drawing.Point(6, 61);
+            this.txtResult.Location = new System.Drawing.Point(6, 52);
             this.txtResult.Multiline = true;
             this.txtResult.Name = "txtResult";
             this.txtResult.Size = new System.Drawing.Size(627, 362);
@@ -129,7 +161,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(652, 532);
+            this.ClientSize = new System.Drawing.Size(652, 588);
             this.Controls.Add(this.Message);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
@@ -153,5 +185,8 @@
         private System.Windows.Forms.TextBox txtResult;
         private System.Windows.Forms.TextBox txtMessage;
         private System.Windows.Forms.Button btnSend;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtClientName;
+        private System.Windows.Forms.Button btnLogout;
     }
 }

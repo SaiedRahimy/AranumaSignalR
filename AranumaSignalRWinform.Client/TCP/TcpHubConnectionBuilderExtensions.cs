@@ -12,13 +12,41 @@ namespace Microsoft.AspNetCore.SignalR.Client
 {
     public static class TcpHubConnectionBuilderExtensions
     {
+        private class TcpConnectionOptionsDerivedHttpEndPoint : UriEndPoint
+        {
+            public TcpConnectionOptionsDerivedHttpEndPoint(Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Http.Connections.Client.HttpConnectionOptions> httpConnectionOptions)
+                : base(httpConnectionOptions.Value.Url)
+            {
+            }
+        }
+
+        private class HubProtocolDerivedHttpOptionsConfigurer : Microsoft.Extensions.Options.IConfigureNamedOptions<Microsoft.AspNetCore.Http.Connections.Client.HttpConnectionOptions>, Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Http.Connections.Client.HttpConnectionOptions>
+        {
+            private readonly TransferFormat _defaultTransferFormat;
+
+            public HubProtocolDerivedHttpOptionsConfigurer(Microsoft.AspNetCore.SignalR.Protocol.IHubProtocol hubProtocol)
+            {
+                _defaultTransferFormat = hubProtocol.TransferFormat;
+            }
+
+            public void Configure(string name, Microsoft.AspNetCore.Http.Connections.Client.HttpConnectionOptions options)
+            {
+                Configure(options);
+            }
+
+            public void Configure(Microsoft.AspNetCore.Http.Connections.Client.HttpConnectionOptions options)
+            {
+                options.DefaultTransferFormat = _defaultTransferFormat;
+            }
+        }
+
         public static IHubConnectionBuilder WithEndPoint(this IHubConnectionBuilder builder, Uri uri)
         {
 
-            if (!string.Equals(uri.Scheme, "net.tcp", StringComparison.Ordinal))
-            {
-                throw new InvalidOperationException($"URI Scheme {uri.Scheme} not supported.");
-            }
+            //if (!string.Equals(uri.Scheme, "net.tcp", StringComparison.Ordinal))
+            //{
+            //    throw new InvalidOperationException($"URI Scheme {uri.Scheme} not supported.");
+            //}
 
             IPEndPoint endPoint;
             if (string.Equals(uri.Host, "localhost"))
@@ -35,7 +63,14 @@ namespace Microsoft.AspNetCore.SignalR.Client
 
         public static IHubConnectionBuilder WithEndPoint(this IHubConnectionBuilder builder, EndPoint endPoint)
         {
+            //builder.Services.AddSingleton<IConnectionFactory>(new TcpConnectionFactory(endPoint));
+
+
+            //builder.Services.AddSingleton<EndPoint, TcpConnectionOptionsDerivedHttpEndPoint>();
+            //builder.Services.AddSingleton<Microsoft.Extensions.Options.IConfigureOptions<Microsoft.AspNetCore.Http.Connections.Client.HttpConnectionOptions>, HubProtocolDerivedHttpOptionsConfigurer>();
+
             builder.Services.AddSingleton<IConnectionFactory>(new TcpConnectionFactory(endPoint));
+            // builder.Services.AddSingleton<IConnectionFactory, Microsoft.AspNetCore.Http.Connections.Client.HttpConnectionFactory>();
 
             return builder;
         }
@@ -49,6 +84,7 @@ namespace Microsoft.AspNetCore.SignalR.Client
                 _endPoint = endPoint;
 
                 //var tts=new TcpConnection(_endPoint).StartAsync();
+                //var ts = tts.Result;
             }
 
 
