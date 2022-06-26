@@ -40,8 +40,13 @@ namespace AranumaSignalR.WebApi.Server
             {
                 // Faster pings for testing
                 options.KeepAliveInterval = TimeSpan.FromSeconds(5);
+                
+
+
             });
             //.AddMessagePackProtocol(); ;
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,9 +58,13 @@ namespace AranumaSignalR.WebApi.Server
             }
 
             app.UseRouting();
-            
+
+           // app.UseSignalR(route => { route.MapHub<MessageHub>("/chat"); });
+
 
             app.UseAuthorization();
+
+            //GlobalHost.HubPipeline.RequireAuthentication();
 
             app.UseCors("CorsPolicy");
 
@@ -64,6 +73,8 @@ namespace AranumaSignalR.WebApi.Server
                 endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/chat");
             });
+
+
         }
     }
 }
