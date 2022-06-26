@@ -59,7 +59,7 @@ namespace AranumaSignalRWinform.Client
                 {
                     connectionBuilder.WithUrl(uri, options =>
                     {
-                        //options.Headers.Add("Authorization", $"Basic {credential}");
+                        options.Headers.Add("Authorization", $"Basic {credential}");
                         //options.AccessTokenProvider = () => Task.FromResult(tokenString); // Not working
                         // Need a solution like this: options.Token = tokenString
 

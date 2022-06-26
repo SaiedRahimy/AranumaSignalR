@@ -221,7 +221,7 @@ namespace AranumaSignalR.WebApi.Server.Hubs
         /// </summary>
         /// <param name="exception"></param>
         /// <returns></returns>
-        public override Task OnDisconnectedAsync(Exception? exception)
+        public override Task OnDisconnectedAsync(Exception exception)
         {
             if (Context != null)
             {

@@ -41,8 +41,6 @@ namespace AranumaSignalR.WebApi.Server
                 // Faster pings for testing
                 options.KeepAliveInterval = TimeSpan.FromSeconds(5);
                 
-
-
             });
             //.AddMessagePackProtocol(); ;
 
@@ -59,7 +57,7 @@ namespace AranumaSignalR.WebApi.Server
 
             app.UseRouting();
 
-           // app.UseSignalR(route => { route.MapHub<MessageHub>("/chat"); });
+            //app.UseSignalR(route => { route.MapHub<MessageHub>("/chat"); });
 
 
             app.UseAuthorization();
@@ -71,7 +69,11 @@ namespace AranumaSignalR.WebApi.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chat");
+                endpoints.MapHub<ChatHub>("/chat", conf =>
+                {
+                    conf.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets;
+                    
+                });
             });
 
 
