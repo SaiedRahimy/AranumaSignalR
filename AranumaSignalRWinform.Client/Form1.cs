@@ -47,8 +47,8 @@ namespace AranumaSignalRWinform.Client
 
                 string baseUrl = txtUrl.Text;
                 var uri = baseUrl == null ? new Uri("net.tcp://94.182.180.208:1234") : new Uri(baseUrl);
-                var credential = Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1")
-                    .GetBytes("SomeUserName" + ":" + "SomePassword"));
+                //var credential = Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1")
+                //    .GetBytes("1234"));
                 var connectionBuilder = new HubConnectionBuilder();
 
                 //if (uri.Scheme.Contains("net.tcp"))
@@ -59,8 +59,12 @@ namespace AranumaSignalRWinform.Client
                 {
                     connectionBuilder.WithUrl(uri, options =>
                     {
-                        options.Headers.Add("Authorization", $"Basic {credential}");
-                        //options.AccessTokenProvider = () => Task.FromResult(tokenString); // Not working
+
+                        //options.q.Add("Authorization", $"Basic {credential}");
+                        //options.Headers.Add("Authorization", $"Basic {credential}");
+                        //options.Headers.Add("Authorization", $"Bearer {credential}");
+                        options.AccessTokenProvider = () => Task.FromResult(txtToken.Text); // Not working
+                        //options.AccessTokenProvider = () => Task.FromResult("1234"); // Not working
                         // Need a solution like this: options.Token = tokenString
 
                     });

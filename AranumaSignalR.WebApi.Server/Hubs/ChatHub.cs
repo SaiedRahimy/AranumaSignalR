@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace AranumaSignalR.WebApi.Server.Hubs
 {
+
+    //[Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize]
     public class ChatHub : Hub
     {
 

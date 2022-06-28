@@ -39,13 +39,16 @@
             this.txtResult = new System.Windows.Forms.TextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtToken = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.Message.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.btnLogout);
             this.groupBox1.Controls.Add(this.label1);
@@ -53,7 +56,7 @@
             this.groupBox1.Controls.Add(this.txtUrl);
             this.groupBox1.Controls.Add(this.btnDisconnect);
             this.groupBox1.Controls.Add(this.btnConnect);
-            this.groupBox1.Location = new System.Drawing.Point(7, 12);
+            this.groupBox1.Location = new System.Drawing.Point(7, 19);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(639, 142);
             this.groupBox1.TabIndex = 0;
@@ -88,6 +91,8 @@
             // 
             // txtUrl
             // 
+            this.txtUrl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUrl.Location = new System.Drawing.Point(6, 22);
             this.txtUrl.Name = "txtUrl";
             this.txtUrl.Size = new System.Drawing.Size(460, 23);
@@ -96,6 +101,7 @@
             // 
             // btnDisconnect
             // 
+            this.btnDisconnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDisconnect.Enabled = false;
             this.btnDisconnect.Location = new System.Drawing.Point(553, 22);
             this.btnDisconnect.Name = "btnDisconnect";
@@ -107,6 +113,7 @@
             // 
             // btnConnect
             // 
+            this.btnConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnConnect.Location = new System.Drawing.Point(472, 22);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(75, 23);
@@ -122,7 +129,7 @@
             this.Message.Controls.Add(this.txtResult);
             this.Message.Controls.Add(this.txtMessage);
             this.Message.Controls.Add(this.btnSend);
-            this.Message.Location = new System.Drawing.Point(1, 160);
+            this.Message.Location = new System.Drawing.Point(1, 307);
             this.Message.Name = "Message";
             this.Message.Size = new System.Drawing.Size(639, 420);
             this.Message.TabIndex = 1;
@@ -157,11 +164,32 @@
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.txtToken);
+            this.groupBox2.Location = new System.Drawing.Point(7, 167);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(639, 134);
+            this.groupBox2.TabIndex = 2;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Token";
+            // 
+            // txtToken
+            // 
+            this.txtToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtToken.Location = new System.Drawing.Point(6, 22);
+            this.txtToken.Multiline = true;
+            this.txtToken.Name = "txtToken";
+            this.txtToken.Size = new System.Drawing.Size(627, 106);
+            this.txtToken.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(652, 588);
+            this.ClientSize = new System.Drawing.Size(652, 735);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.Message);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
@@ -171,6 +199,8 @@
             this.groupBox1.PerformLayout();
             this.Message.ResumeLayout(false);
             this.Message.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -188,5 +218,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtClientName;
         private System.Windows.Forms.Button btnLogout;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox txtToken;
     }
 }
