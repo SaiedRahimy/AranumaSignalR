@@ -20,34 +20,22 @@ namespace AranumaSignalR.Ids.Infr
         public static IEnumerable<ApiScope> ApiScopes() =>
             new ApiScope[]
             {
-                new ApiScope("myApi.read"),
-                new ApiScope("myApi.write"),
+                new ApiScope("chat"),
+                new ApiScope("sensor"),
             };
 
         public static IEnumerable<ApiResource> ApiResources() =>
             new ApiResource[]
             {
-                new ApiResource("myApi")
+                new ApiResource("Aranuma.SignalR.Api")
                 {
-                    Scopes = new List<string>{ "myApi.read","myApi.write" },
-                    ApiSecrets = new List<Secret>{ new Secret("signalRclientsAuth".Sha256()) }
+                    Scopes = new List<string>{ "chat", "sensor" },
                 }
             };
 
         public static List<TestUser> GetUsers() =>
            new List<TestUser>
            {
-              //new TestUser
-              //{
-              //    SubjectId = "a9ea0f25-b964-409f-bcce-c923266249b4",
-              //    Username = "Mick",
-              //    Password = "MickPassword",
-              //    Claims = new List<Claim>
-              //    {
-              //        new Claim("given_name", "Mick"),
-              //        new Claim("family_name", "Mining")
-              //    }
-              //},
                new TestUser
               {
                   SubjectId = "a9ea0f25-b964-409f-bcce-c923266249b4",
@@ -57,7 +45,7 @@ namespace AranumaSignalR.Ids.Infr
                   {
                       new Claim("given_name", "saied"),
                       new Claim("family_name", "rahimi"),
-                      new Claim(JwtClaimTypes.WebSite, "http://codewithmukesh.com"),
+                      
                   }
               },
               new TestUser
@@ -74,33 +62,18 @@ namespace AranumaSignalR.Ids.Infr
            };
 
         public static IEnumerable<Client> GetClients() =>
-    new List<Client>
-    {
-       //new Client
-       //{
-       //     ClientId = "company-employee",
-       //     ClientSecrets = new [] { new Secret("codemazesecret".Sha512()) },
-       //     AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-       //     AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId }
-       // },
-        new Client
-       {
-            ClientId = "AranumaCo",
-            ClientSecrets = new [] { new Secret("signalRclientsAuth".Sha512()) },
-            //AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-            AllowedGrantTypes = GrantTypes.ClientCredentials,
-            //AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, "myApi.read" }
-            AllowedScopes = { "myApi.read" }
-        },
-        new Client
-        {
-            ClientId = "cwm.client",
-            ClientName = "Client Credentials Client",
-            AllowedGrantTypes = GrantTypes.ClientCredentials,
-            ClientSecrets = { new Secret("signalRclientsAuth".Sha256()) },
-            AllowedScopes = { "myApi.read" }
-        },
+            new List<Client>
+            {
+                new Client
+                   {
+                        ClientId = "AranumaCo",
+                        ClientSecrets = new [] { new Secret("signalRclientsAuth".Sha512()) },
+                        AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
+                        //AllowedGrantTypes = GrantTypes.ClientCredentials,//"client_credentials"
+                        //AllowedScopes = { IdentityServerConstants.StandardScopes.OpenId, "myApi.read" }
+                        AllowedScopes = { "chat","sensor" }
+                    }
 
-    };
+            };
     }
 }

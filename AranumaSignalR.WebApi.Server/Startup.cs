@@ -1,23 +1,13 @@
 using AranumaSignalR.WebApi.Server.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
 using AranumaSignalR.WebApi.Server.Service;
+
 
 namespace AranumaSignalR.WebApi.Server
 {
@@ -44,134 +34,27 @@ namespace AranumaSignalR.WebApi.Server
                 .AllowCredentials()
                 .WithOrigins("http://localhost:5002");
             }));
+            
 
-
-
-            //var guestPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
-            //  .RequireClaim("scope", "myApi.read")
-            //  .Build();
-
-            //var tokenValidationParameters = new TokenValidationParameters()
-            //{
-            //    ValidIssuer = "http://localhost:5000/",
-            //    ValidAudience = "AranumaCo",
-            //    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("signalRclientsAuth")),
-            //    NameClaimType = "email",
-            //    RoleClaimType = "role",
-
-            //    //ValidIssuer = "http://localhost:5000/",
-            //    //ValidAudience = "AranumaCo",
-            //    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("dataEventRecordsSecret")),
-            //    //NameClaimType = "email",
-            //    //RoleClaimType = "role",
-
-
-
-            //};
-
-
-            //var jwtSecurityTokenHandler = new JwtSecurityTokenHandler
-            //{
-            //    InboundClaimTypeMap = new Dictionary<string, string>()
-            //};
-
-            //services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-            //   .AddJwtBearer(options =>
-            //   {
-            //       //options.Authority = "https://localhost:5001/";
-            //       options.Authority = "http://localhost:5000/";
-            //       options.Audience = "AranumaCo";                   
-            //       options.IncludeErrorDetails = true;
-            //       options.SaveToken = true;
-            //       options.SecurityTokenValidators.Clear();
-            //       options.SecurityTokenValidators.Add(jwtSecurityTokenHandler);
-            //       options.TokenValidationParameters = tokenValidationParameters;
-            //       options.Events = new JwtBearerEvents
-            //       {
-            //           OnMessageReceived = context =>
-            //           {
-            //               Console.WriteLine(JsonConvert.SerializeObject(context, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
-
-
-            //               if ((context.Request.Path.Value.StartsWith("/signalrhome")
-            //                    || context.Request.Path.Value.StartsWith("/looney")
-            //                    || context.Request.Path.Value.StartsWith("/usersdm")
-            //                    || context.Request.Path.Value.StartsWith("/chat")
-            //                   )
-            //                    && context.Request.Headers.TryGetValue("Authorization", out StringValues token)
-            //                //context.Request.Query.TryGetValue("token", out StringValues token)
-            //                )
-            //               {
-
-
-
-
-
-            //                   context.Token = token;//.ToString().Replace("Bearer ", "");
-            //               }
-
-            //               return Task.CompletedTask;
-            //           },
-            //           OnAuthenticationFailed = context =>
-            //           {
-            //               var te = context.Exception;
-            //               return Task.CompletedTask;
-            //           }
-            //       };
-            //   });
-
-
-            //services.AddAuthentication("Bearer")
-            //  .AddIdentityServerAuthentication("Bearer", options =>
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
-                {
-                options.Audience = "https://localhost:5001/";
-                    options.Authority = "https://localhost:5001/";
+                {                
+                    options.Authority = "http://localhost:5000/";
+                    options.RequireHttpsMetadata = false;   
+                    options.Audience = "Aranuma.SignalR.Api";
                     //options.TokenValidationParameters = new TokenValidationParameters
                     //{
                     //    ValidateIssuerSigningKey = true,
                     //    ValidateIssuer = true,
                     //    ValidateAudience = true,
                     //    ValidateLifetime = true,
-                    //    IssuerSigningKey = "signalRclientsAuth",
+                    //    IssuerSigningKey = new SymmetricSecurityKey(new HMACSHA256(Encoding.UTF8.GetBytes("signalRclientsAuth")).Key),
                     //    ValidIssuer = "https://localhost:5001/",
-                    //    ValidAudience = "https://localhost:5001/"
+                    //    ValidAudience = "AranumaCo"
                     //};
-                    options.Events = new JwtBearerEvents
-                           {
-                               OnMessageReceived = context =>
-                               {
-                                   //Console.WriteLine(JsonConvert.SerializeObject(context, Formatting.Indented, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
 
-
-                                   if ((context.Request.Path.Value.StartsWith("/signalrhome")
-                                        || context.Request.Path.Value.StartsWith("/looney")
-                                        || context.Request.Path.Value.StartsWith("/usersdm")
-                                        || context.Request.Path.Value.StartsWith("/chat")
-                                       )
-                                        && context.Request.Headers.TryGetValue("Authorization", out StringValues token)
-                                    //context.Request.Query.TryGetValue("token", out StringValues token)
-                                    )
-                                   {
-
-
-
-
-
-                                       context.Token = token.ToString().Replace("Bearer ", "");
-                                   }
-
-                                   return Task.CompletedTask;
-                               },
-                               OnAuthenticationFailed = context =>
-                               {
-                                   var te = context.Exception;
-                                   return Task.CompletedTask;
-                               }
-                           };
                 });
-
+            
             services.AddSingleton<ITokenService, TokenService>();
 
             services.AddSignalR(options =>
@@ -180,7 +63,7 @@ namespace AranumaSignalR.WebApi.Server
                 options.KeepAliveInterval = TimeSpan.FromSeconds(5);
 
             });
-            //.AddMessagePackProtocol(); ;
+           
 
 
         }
@@ -195,14 +78,8 @@ namespace AranumaSignalR.WebApi.Server
 
             app.UseRouting();
 
-            //app.UseSignalR(route => { route.MapHub<MessageHub>("/chat"); });
-
-
             app.UseAuthentication();
             app.UseAuthorization();
-
-            //GlobalHost.HubPipeline.RequireAuthentication();
-
             app.UseCors("CorsPolicy");
 
             app.UseEndpoints(endpoints =>
@@ -213,6 +90,7 @@ namespace AranumaSignalR.WebApi.Server
                     conf.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.WebSockets;
 
                 });
+                //.RequireAuthorization(); //For authorize hub un comment this but include anymous methods comment .RequireAuthorization() and use [Authorize] in hub
             });
 
 

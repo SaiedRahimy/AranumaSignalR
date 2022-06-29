@@ -97,7 +97,7 @@
             this.txtUrl.Name = "txtUrl";
             this.txtUrl.Size = new System.Drawing.Size(460, 23);
             this.txtUrl.TabIndex = 2;
-            this.txtUrl.Text = "http://localhost:5000/chat/";
+            this.txtUrl.Text = "http://localhost:5010/chat/";
             // 
             // btnDisconnect
             // 

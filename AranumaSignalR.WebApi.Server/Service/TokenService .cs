@@ -17,19 +17,21 @@ namespace AranumaSignalR.WebApi.Server.Service
         {
             using (var client = new HttpClient())
             {
-                _discDocument = client.GetDiscoveryDocumentAsync("https://localhost:5001/.well-known/openid-configuration").Result;
+                _discDocument = client.GetDiscoveryDocumentAsync("http://localhost:5000/.well-known/openid-configuration").Result;
             }
         }
-        public async Task<TokenResponse> GetToken(string scope)
+        public async Task<TokenResponse> GetToken(string scope= "chat")
         {
             using (var client = new HttpClient())
             {
                 var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
                 {
                     Address = _discDocument.TokenEndpoint,
-                    ClientId = "cwm.client",
+                    ClientId = "AranumaCo",
                     Scope = scope,
-                    ClientSecret = "secret"
+                    ClientSecret = "signalRclientsAuth",
+                    GrantType= "client_credentials",
+                    
                 });
                 if (tokenResponse.IsError)
                 {

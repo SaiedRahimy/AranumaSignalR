@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace AranumaSignalR.WebApi.Server.Hubs
 {
-
+        
+    //[Authorize]
     //[Authorize(AuthenticationSchemes = "Bearer")]
-    [Authorize]
     public class ChatHub : Hub
     {
 
@@ -75,6 +75,7 @@ namespace AranumaSignalR.WebApi.Server.Hubs
         /// <param name="name"></param>
         /// <param name="message"></param>
         /// <returns></returns>
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task Send(string name, string message)
         {
             // Sent to Caller
