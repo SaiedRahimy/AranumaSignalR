@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AranumaSignalR.WebApi.Server.Monitoring.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,11 @@ namespace AranumaSignalR.WebApi.Server.Hubs
     //[Authorize(AuthenticationSchemes = "Bearer")]
     public class ChatHub : Hub
     {
+        readonly IMonitoringMetrics _monitoringMetrics;
+        public ChatHub(IMonitoringMetrics monitoringMetrics  )
+        {
+            _monitoringMetrics = monitoringMetrics;
+        }
 
 
         public override Task OnConnectedAsync()
@@ -21,6 +27,8 @@ namespace AranumaSignalR.WebApi.Server.Hubs
             {
                 var message = "Client On Connected by ConnectionId  :" + Context.ConnectionId;
                 Console.WriteLine(message);
+
+                _monitoringMetrics.AddMetricValue(Enum.MonitoringMetricType.All_Active_Connections, 1);
             }
             else
             {
@@ -232,6 +240,7 @@ namespace AranumaSignalR.WebApi.Server.Hubs
             {
                 var message = "ConnectionId  :" + Context.ConnectionId + ", Disconnected";
                 Console.WriteLine(message);
+                _monitoringMetrics.AddMetricValue(Enum.MonitoringMetricType.All_Active_Connections, -1);
             }
             else
             {

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnLogout = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -41,6 +42,7 @@
             this.btnSend = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtToken = new System.Windows.Forms.TextBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.Message.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -184,6 +186,10 @@
             this.txtToken.Size = new System.Drawing.Size(627, 106);
             this.txtToken.TabIndex = 4;
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -220,5 +226,6 @@
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtToken;
+        private System.Windows.Forms.Timer timer1;
     }
 }

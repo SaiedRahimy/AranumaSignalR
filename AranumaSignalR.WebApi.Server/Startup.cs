@@ -7,7 +7,11 @@ using Microsoft.Extensions.Hosting;
 using System;
 using IdentityServer4.AccessTokenValidation;
 using AranumaSignalR.WebApi.Server.Service;
-
+using AranumaSignalR.WebApi.Server.Model;
+using AranumaSignalR.WebApi.Server.Monitoring.Contracts;
+using AranumaSignalR.WebApi.Server.Monitoring;
+using Core.Infrustructure.Monitoring;
+using Core.Infrustructure.Monitoring.Repository;
 
 namespace AranumaSignalR.WebApi.Server
 {
@@ -34,7 +38,18 @@ namespace AranumaSignalR.WebApi.Server
                 .AllowCredentials()
                 .WithOrigins("http://localhost:5002");
             }));
+
             
+
+
+            services.Configure<MonitoringConfig>(Configuration.GetSection("MonitoringConfig"));
+
+
+            services.AddMonitoring(Configuration);
+
+            
+            services.AddSingleton<IMonitoringClient, MonitoringClient>();
+            services.AddSingleton<IMonitoringMetrics, MonitoringMetrics>();
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                .AddJwtBearer(options =>
@@ -56,6 +71,7 @@ namespace AranumaSignalR.WebApi.Server
                 });
             
             services.AddSingleton<ITokenService, TokenService>();
+            
 
             services.AddSignalR(options =>
             {
@@ -95,5 +111,6 @@ namespace AranumaSignalR.WebApi.Server
 
 
         }
+
     }
 }
