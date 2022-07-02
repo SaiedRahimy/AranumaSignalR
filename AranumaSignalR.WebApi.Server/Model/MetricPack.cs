@@ -6,5 +6,6 @@ namespace AranumaSignalR.WebApi.Server.Model
     {
         public Gauge Gauge { get; set; }
         public int Counter { get; set; }
+        public bool ResetAfterEachSend { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AranumaSignalR.WebApi.Server.Monitoring.Contracts;
+//using AranumaSignalR.WebApi.Server.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -9,15 +10,16 @@ using System.Threading.Tasks;
 
 namespace AranumaSignalR.WebApi.Server.Hubs
 {
-        
+
     //[Authorize]
     //[Authorize(AuthenticationSchemes = "Bearer")]
     public class ChatHub : Hub
     {
         readonly IMonitoringMetrics _monitoringMetrics;
-        public ChatHub(IMonitoringMetrics monitoringMetrics  )
+        public ChatHub(IMonitoringMetrics monitoringMetrics)
         {
-            _monitoringMetrics = monitoringMetrics;
+            _monitoringMetrics = monitoringMetrics;            
+
         }
 
 
@@ -27,8 +29,14 @@ namespace AranumaSignalR.WebApi.Server.Hubs
             {
                 var message = "Client On Connected by ConnectionId  :" + Context.ConnectionId;
                 Console.WriteLine(message);
+                _monitoringMetrics.AddMetricValue(Enum.MonitoringMetricType.All_Active_Connections, 1, resetAfterEachSend: false).GetAwaiter().GetResult();
 
-                _monitoringMetrics.AddMetricValue(Enum.MonitoringMetricType.All_Active_Connections, 1);
+                //احراز هویت شده است?
+                var isAuthenticated = Context.User.Identity.IsAuthenticated;
+
+                _monitoringMetrics.AddMetricValue(
+                    isAuthenticated ? Enum.MonitoringMetricType.All_Authrized_Connections : Enum.MonitoringMetricType.All_UnAuthrized_Connections,
+                    1, resetAfterEachSend: false).GetAwaiter().GetResult();
             }
             else
             {
@@ -37,7 +45,7 @@ namespace AranumaSignalR.WebApi.Server.Hubs
 
             return base.OnConnectedAsync();
         }
-       
+
 
         /// <summary>
         /// Identification Client/Caller
@@ -83,12 +91,25 @@ namespace AranumaSignalR.WebApi.Server.Hubs
         /// <param name="name"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
+        //[AuthorizeHub(AuthenticationSchemes = "Bearer")]
+        [Authorize]
         public async Task Send(string name, string message)
         {
             // Sent to Caller
             Console.WriteLine(name + ": " + message);
             await Clients.Clients(Context.ConnectionId).SendAsync("recive", name, message);
+
+#if DEBUG
+            if (message == "login")
+            {
+                _monitoringMetrics.AddMetricValue(Enum.MonitoringMetricType.All_Active_Connections, 1, resetAfterEachSend: false).GetAwaiter().GetResult();
+            }
+            else
+            {
+                _monitoringMetrics.AddMetricValue(Enum.MonitoringMetricType.All_Active_Connections, -1, resetAfterEachSend: false).GetAwaiter().GetResult();
+            }
+#endif
 
         }
 
@@ -240,7 +261,14 @@ namespace AranumaSignalR.WebApi.Server.Hubs
             {
                 var message = "ConnectionId  :" + Context.ConnectionId + ", Disconnected";
                 Console.WriteLine(message);
-                _monitoringMetrics.AddMetricValue(Enum.MonitoringMetricType.All_Active_Connections, -1);
+                _monitoringMetrics.AddMetricValue(Enum.MonitoringMetricType.All_Active_Connections, -1, resetAfterEachSend: false);
+
+                //احراز هویت شده است?
+                var isAuthenticated = Context.User.Identity.IsAuthenticated;
+
+                _monitoringMetrics.AddMetricValue(
+                    isAuthenticated ? Enum.MonitoringMetricType.All_Authrized_Connections : Enum.MonitoringMetricType.All_UnAuthrized_Connections,
+                    -1, resetAfterEachSend: false).GetAwaiter().GetResult();
             }
             else
             {

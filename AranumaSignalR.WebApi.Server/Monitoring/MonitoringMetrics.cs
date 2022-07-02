@@ -11,11 +11,6 @@ using Microsoft.Extensions.Options;
 
 namespace AranumaSignalR.WebApi.Server.Monitoring
 {
-    public static class MonitoringMetricsStatics
-    {
-        public static ConcurrentDictionary<MonitoringMetricType, MetricPack> Gauges;
-        public static Timer Timer;
-    }
 
     public class MonitoringMetrics : IMonitoringMetrics
     {
@@ -23,6 +18,8 @@ namespace AranumaSignalR.WebApi.Server.Monitoring
 
         IMonitoringClient _monitoringClient;
         readonly IOptions<MonitoringConfig> _configuration;
+        public ConcurrentDictionary<MonitoringMetricType, MetricPack> _gauges;
+        public Timer _timer;
 
         #endregion
 
@@ -32,31 +29,31 @@ namespace AranumaSignalR.WebApi.Server.Monitoring
             _monitoringClient = monitoringClient;
             _configuration = configuration;
 
-            if (MonitoringMetricsStatics.Timer == null)
+            _gauges = new ConcurrentDictionary<MonitoringMetricType, MetricPack>();
+            _timer = new Timer(1000);
+
+            _timer.Elapsed += (s, e) =>
             {
-                MonitoringMetricsStatics.Gauges = new ConcurrentDictionary<MonitoringMetricType, MetricPack>();
+                SendMetrics();
+            };
+            _timer.Enabled = true;
 
-                MonitoringMetricsStatics.Timer = new Timer(1000);
 
-                MonitoringMetricsStatics.Timer.Elapsed += (s, e) =>
-                {
-                    SendMetrics();
-                };
-                MonitoringMetricsStatics.Timer.Enabled = true;
-
-            }
         }
 
-       
+
         #region Private Methods
         private void SendMetrics()
         {
-            var metricPackes = MonitoringMetricsStatics.Gauges.Values;
+            var metricPackes = _gauges.Values;
 
             foreach (var metric in metricPackes)
             {
                 SendGaugeMetric(metric.Gauge, metric.Counter);
-                metric.Counter = 0;
+                if (metric.ResetAfterEachSend)
+                {
+                    metric.Counter = 0;
+                }
             }
 
         }
@@ -76,17 +73,17 @@ namespace AranumaSignalR.WebApi.Server.Monitoring
         #endregion
 
         #region Public Methods
-        public async Task AddMetricValue(MonitoringMetricType metricType, int count)
+        public async Task AddMetricValue(MonitoringMetricType metricType, int count, bool resetAfterEachSend = true)
         {
-            if (MonitoringMetricsStatics.Gauges.ContainsKey(metricType))
+            if (_gauges.ContainsKey(metricType))
             {
-                MonitoringMetricsStatics.Gauges[metricType].Counter += count;
+                _gauges[metricType].Counter += count;
             }
             else
             {
                 var metricTypeName = metricType.ToString();
                 var gauge = _monitoringClient.CreateGauge(_configuration.Value.PrefixNameForMetric + metricTypeName, metricTypeName);
-                var result = MonitoringMetricsStatics.Gauges.TryAdd(metricType, new MetricPack { Gauge = gauge, Counter = count });
+                var result = _gauges.TryAdd(metricType, new MetricPack { Gauge = gauge, Counter = count, ResetAfterEachSend = resetAfterEachSend });
                 if (!result)
                 {
                     //log

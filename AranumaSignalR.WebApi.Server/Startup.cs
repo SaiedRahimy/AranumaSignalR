@@ -87,6 +87,9 @@ namespace AranumaSignalR.WebApi.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //var builder = WebApplication.CreateBuilder(args);
+            //builder.Logging.ClearProviders();
+            //builder.Logging.AddConsole();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

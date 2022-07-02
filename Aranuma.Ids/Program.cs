@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AranumaSignalR.Ids
+namespace Aranuma.Ids
 {
     public class Program
     {

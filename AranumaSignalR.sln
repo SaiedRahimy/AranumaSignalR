@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AranumaSignalRWinform.Clien
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AranumaSignalR.WebApi.Server", "AranumaSignalR.WebApi.Server\AranumaSignalR.WebApi.Server.csproj", "{AFB78959-5F4A-455C-A456-EB5D9691C0D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AranumaSignalR.Ids", "AranumaSignalR.Ids\AranumaSignalR.Ids.csproj", "{D7E8C8EF-8CC8-46AE-8787-097A6962CD9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aranuma.Ids", "Aranuma.Ids\Aranuma.Ids.csproj", "{D7E8C8EF-8CC8-46AE-8787-097A6962CD9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

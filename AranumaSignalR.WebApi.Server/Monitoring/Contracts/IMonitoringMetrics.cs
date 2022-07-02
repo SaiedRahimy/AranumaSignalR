@@ -5,6 +5,6 @@ namespace AranumaSignalR.WebApi.Server.Monitoring.Contracts
 {
     public interface IMonitoringMetrics
     {
-        Task AddMetricValue(MonitoringMetricType metricType, int count);
+        Task AddMetricValue(MonitoringMetricType metricType, int count, bool resetAfterEachSend = true);
     }
 }

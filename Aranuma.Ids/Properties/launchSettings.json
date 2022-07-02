@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "AranumaSignalR.Ids": {
+    "Aranuma.Ids": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

@@ -75,7 +75,7 @@ namespace AranumaSignalRWinform.Client
                     .WithAutomaticReconnect()//
                     .Build();
 
-
+                
                 _connection.On<string, string>("recive", (s1, s2) => OnRecive(s1, s2));
                 _connection.On<string>("identificationResponse", (message) => IdentificationResponse(message));
 
