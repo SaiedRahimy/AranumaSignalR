@@ -6,12 +6,19 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Http;
+using AranumaSignalRWinform.Client.Model;
+using System.Net.Http.Json;
+using Newtonsoft.Json;
+using System.Text;
+using System.Collections.Generic;
 
 namespace AranumaSignalRWinform.Client
 {
     public partial class Form1 : Form
     {
         private HubConnection _connection;
+        
         public Form1()
         {
             InitializeComponent();
@@ -75,7 +82,7 @@ namespace AranumaSignalRWinform.Client
                     .WithAutomaticReconnect()//
                     .Build();
 
-                
+
                 _connection.On<string, string>("recive", (s1, s2) => OnRecive(s1, s2));
                 _connection.On<string>("identificationResponse", (message) => IdentificationResponse(message));
 
@@ -102,7 +109,7 @@ namespace AranumaSignalRWinform.Client
 
 
                 await _connection.StartAsync();
-                
+
 
 
                 await _connection.InvokeAsync("Identification", txtClientName.Text);
@@ -198,5 +205,62 @@ namespace AranumaSignalRWinform.Client
         {
 
         }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            Login();
+        }
+        private TokenModel Login()
+        {
+            var _client = new HttpClient();
+
+            var idsUrl = string.IsNullOrEmpty(txtIdsUrl.Text) ? "http://localhost:5000/connect/token" : txtIdsUrl.Text;
+
+            try
+            {
+
+                var dict = new Dictionary<string, string>();
+                dict.Add("Content-Type", "application/x-www-form-urlencoded");
+                dict.Add("client_id", "AranumaCo");
+                dict.Add("client_secret", "signalRclientsAuth");
+                dict.Add("grant_type", "password");
+                dict.Add("username", txtUserName.Text);
+                dict.Add("password", txtPassword.Text);
+                dict.Add("scope", "chat");
+
+                var response = _client.PostAsync(idsUrl, new FormUrlEncodedContent(dict)).GetAwaiter().GetResult();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = response.EnsureSuccessStatusCode();
+
+                    var token = response.Content.ReadFromJsonAsync<TokenModel>().GetAwaiter().GetResult();
+                    
+                    txtToken.Text = token.AccessToken;
+                    return token;
+
+                }
+                else
+                {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        MessageBox.Show("نام کاربری یا کلمه عبور معتبر نمی باشد");
+                    }
+                    else
+                    {
+                        MessageBox.Show("درخواست شما معتبر نمی باشد.");
+                    }
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("درخواست شما معتبر نمی باشد.");
+                return null;
+
+            }
+        }
+
+
     }
 }

@@ -41,6 +41,13 @@
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.btnSend = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnLogin = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.txtUserName = new System.Windows.Forms.TextBox();
+            this.txtIdsUrl = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.txtToken = new System.Windows.Forms.TextBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
@@ -58,9 +65,9 @@
             this.groupBox1.Controls.Add(this.txtUrl);
             this.groupBox1.Controls.Add(this.btnDisconnect);
             this.groupBox1.Controls.Add(this.btnConnect);
-            this.groupBox1.Location = new System.Drawing.Point(7, 19);
+            this.groupBox1.Location = new System.Drawing.Point(7, 195);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(639, 142);
+            this.groupBox1.Size = new System.Drawing.Size(908, 142);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server";
@@ -97,7 +104,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUrl.Location = new System.Drawing.Point(6, 22);
             this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(460, 23);
+            this.txtUrl.Size = new System.Drawing.Size(729, 23);
             this.txtUrl.TabIndex = 2;
             this.txtUrl.Text = "http://localhost:5010/chat/";
             // 
@@ -105,7 +112,7 @@
             // 
             this.btnDisconnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDisconnect.Enabled = false;
-            this.btnDisconnect.Location = new System.Drawing.Point(553, 22);
+            this.btnDisconnect.Location = new System.Drawing.Point(822, 22);
             this.btnDisconnect.Name = "btnDisconnect";
             this.btnDisconnect.Size = new System.Drawing.Size(75, 23);
             this.btnDisconnect.TabIndex = 1;
@@ -116,7 +123,7 @@
             // btnConnect
             // 
             this.btnConnect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnConnect.Location = new System.Drawing.Point(472, 22);
+            this.btnConnect.Location = new System.Drawing.Point(741, 22);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(75, 23);
             this.btnConnect.TabIndex = 0;
@@ -131,9 +138,9 @@
             this.Message.Controls.Add(this.txtResult);
             this.Message.Controls.Add(this.txtMessage);
             this.Message.Controls.Add(this.btnSend);
-            this.Message.Location = new System.Drawing.Point(1, 307);
+            this.Message.Location = new System.Drawing.Point(1, 343);
             this.Message.Name = "Message";
-            this.Message.Size = new System.Drawing.Size(639, 420);
+            this.Message.Size = new System.Drawing.Size(908, 420);
             this.Message.TabIndex = 1;
             this.Message.TabStop = false;
             this.Message.Text = "Message";
@@ -145,7 +152,7 @@
             this.txtResult.Location = new System.Drawing.Point(6, 52);
             this.txtResult.Multiline = true;
             this.txtResult.Name = "txtResult";
-            this.txtResult.Size = new System.Drawing.Size(627, 362);
+            this.txtResult.Size = new System.Drawing.Size(896, 362);
             this.txtResult.TabIndex = 3;
             // 
             // txtMessage
@@ -168,22 +175,90 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnLogin);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.txtPassword);
+            this.groupBox2.Controls.Add(this.txtUserName);
+            this.groupBox2.Controls.Add(this.txtIdsUrl);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.txtToken);
-            this.groupBox2.Location = new System.Drawing.Point(7, 167);
+            this.groupBox2.Location = new System.Drawing.Point(7, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(639, 134);
+            this.groupBox2.Size = new System.Drawing.Size(908, 177);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Token";
+            // 
+            // btnLogin
+            // 
+            this.btnLogin.Location = new System.Drawing.Point(777, 19);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(119, 23);
+            this.btnLogin.TabIndex = 11;
+            this.btnLogin.Text = "Login / Get Token";
+            this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(602, 22);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(60, 15);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Password:";
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(668, 20);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
+            this.txtPassword.Size = new System.Drawing.Size(95, 23);
+            this.txtPassword.TabIndex = 9;
+            this.txtPassword.Text = "rahimi!@";
+            // 
+            // txtUserName
+            // 
+            this.txtUserName.Location = new System.Drawing.Point(446, 20);
+            this.txtUserName.Name = "txtUserName";
+            this.txtUserName.Size = new System.Drawing.Size(150, 23);
+            this.txtUserName.TabIndex = 8;
+            this.txtUserName.Text = "saied";
+            // 
+            // txtIdsUrl
+            // 
+            this.txtIdsUrl.Location = new System.Drawing.Point(67, 20);
+            this.txtIdsUrl.Name = "txtIdsUrl";
+            this.txtIdsUrl.Size = new System.Drawing.Size(283, 23);
+            this.txtIdsUrl.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(375, 24);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 15);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "UserName:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(11, 23);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(45, 15);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "IDS Url:";
             // 
             // txtToken
             // 
             this.txtToken.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtToken.Location = new System.Drawing.Point(6, 22);
+            this.txtToken.Location = new System.Drawing.Point(6, 65);
             this.txtToken.Multiline = true;
             this.txtToken.Name = "txtToken";
-            this.txtToken.Size = new System.Drawing.Size(627, 106);
+            this.txtToken.Size = new System.Drawing.Size(896, 106);
             this.txtToken.TabIndex = 4;
             // 
             // timer1
@@ -194,7 +269,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(652, 735);
+            this.ClientSize = new System.Drawing.Size(921, 771);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.Message);
             this.Controls.Add(this.groupBox1);
@@ -227,5 +302,12 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox txtToken;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.TextBox txtUserName;
+        private System.Windows.Forms.TextBox txtIdsUrl;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
     }
 }
